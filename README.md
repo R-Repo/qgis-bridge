@@ -47,6 +47,26 @@ to_qgis("az://my-container/dem.tif", layer_name="DEM")
 pip install qgis-bridge
 ```
 
+The QGIS plugin must also be installed separately inside QGIS (Plugins > Install from Zip), using the `qgis_plugin/` directory from this repository.
+
+## Contributing
+
+This project uses [uv](https://docs.astral.sh/uv/) for development.
+
+```bash
+# Install uv (if not already installed)
+brew install uv          # macOS
+pip install uv           # any platform
+
+# Clone and set up
+git clone https://github.com/razarizvi/qgis-bridge
+cd qgis-bridge
+uv sync --group dev      # creates .venv and installs all dependencies
+
+# Run tests (no QGIS required)
+uv run pytest tests/
+```
+
 ## Status
 
 Early development. API subject to change.

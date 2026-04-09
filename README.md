@@ -31,7 +31,7 @@ to_qgis("az://my-container/dem.tif", layer_name="DEM")
 
 ## Supported Data Types
 
-- **Vector**: GeoDataFrame or any DataFrame with geometry
+- **Vector**: GeoDataFrame with a CRS set
 - **Raster**: Cloud GeoTIFFs via GCS (`gs://`), S3 (`s3://`), or Azure Blob (`az://`)
 
 ## Design

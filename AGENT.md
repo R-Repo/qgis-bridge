@@ -153,6 +153,7 @@ All significant design choices are documented in `docs/decisions/`. **Read the r
 | ADR-007 | Cloud URI / no auth surface |
 | ADR-008 | Function-first API |
 | ADR-009 | Single repository |
+| ADR-010 | uv as dev workflow tool |
 
 ---
 

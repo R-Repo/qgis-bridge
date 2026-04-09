@@ -64,20 +64,39 @@ def _interpolate_colors(
     return result
 
 
+_SYMBOL_CLASS = {
+    "marker": "SimpleMarker",
+    "line": "SimpleLine",
+    "fill": "SimpleFill",
+}
+
+_SYMBOL_PROPS = {
+    "marker": {
+        "color": None, "outline_color": None,
+        "size": "3", "name": "circle",
+    },
+    "line": {
+        "line_color": None, "line_width": "0.5",
+    },
+    "fill": {
+        "color": None, "outline_color": None,
+        "outline_width": "0.26", "style": "solid",
+    },
+}
+
+
 def _make_symbol_element(
     parent: Element, color: tuple[int, int, int], alpha: int = 255,
     name: str = "0", symbol_type: str = "fill",
 ) -> Element:
     """Create a minimal QGIS symbol element."""
     sym = SubElement(parent, "symbol", type=symbol_type, name=name, alpha="1")
-    layer = SubElement(sym, "layer", {"class": "SimpleFill", "pass": "0"})
-    props = {
-        "color": _rgb(color, alpha),
-        "outline_color": _rgb(_DEFAULT_STROKE),
-        "outline_width": "0.26",
-        "style": "solid",
-    }
-    for k, v in props.items():
+    cls = _SYMBOL_CLASS.get(symbol_type, "SimpleFill")
+    layer = SubElement(sym, "layer", {"class": cls, "pass": "0"})
+    template = _SYMBOL_PROPS.get(symbol_type, _SYMBOL_PROPS["fill"])
+    for k, v in template.items():
+        if v is None:
+            v = _rgb(color, alpha) if "outline" not in k else _rgb(_DEFAULT_STROKE)
         SubElement(layer, "prop", k=k, v=v)
     return sym
 

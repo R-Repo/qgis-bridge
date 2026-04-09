@@ -91,6 +91,28 @@ class TestCategorized:
         assert values == ["A", "B", "C"]
 
 
+class TestSymbolTypes:
+    def test_marker_uses_simple_marker(self):
+        root = _parse(make_single_symbol_qml(symbol_type="marker"))
+        layer = root.find(".//layer")
+        assert layer.get("class") == "SimpleMarker"
+
+    def test_line_uses_simple_line(self):
+        root = _parse(make_single_symbol_qml(symbol_type="line"))
+        layer = root.find(".//layer")
+        assert layer.get("class") == "SimpleLine"
+
+    def test_fill_uses_simple_fill(self):
+        root = _parse(make_single_symbol_qml(symbol_type="fill"))
+        layer = root.find(".//layer")
+        assert layer.get("class") == "SimpleFill"
+
+    def test_graduated_marker(self):
+        root = _parse(make_graduated_qml([1, 2, 3], "v", symbol_type="marker"))
+        layers = root.findall(".//layer")
+        assert all(l.get("class") == "SimpleMarker" for l in layers)
+
+
 class TestColorInterpolation:
     def test_single_color(self):
         colors = _interpolate_colors("RdYlGn", 1)

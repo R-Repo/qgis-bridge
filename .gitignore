@@ -25,5 +25,8 @@ Thumbs.db
 .coverage
 htmlcov/
 
+# Agent logs (keep existing, ignore new)
+AGENT/logs/
+
 # uv
 .python-version

@@ -112,12 +112,12 @@ Messages are newline-delimited (`\n` terminated). One message per connection.
 
 ### Install the Python package (editable)
 ```bash
-pip install -e .
+uv sync --group dev      # creates .venv, installs package + dev deps
 ```
 
 ### Run tests (no QGIS required)
 ```bash
-pytest tests/
+uv run pytest tests/
 ```
 
 `tests/` only contains tests for pure-stdlib modules (`_uri.py`, `_style.py`). These run in any Python environment with no QGIS.

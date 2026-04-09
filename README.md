@@ -10,14 +10,14 @@ Push spatial data from Python directly into a live QGIS session — no file expo
 
 **Standalone function:**
 ```python
-from qbridge import to_qgis
+from qgis_bridge import to_qgis
 
 to_qgis(gdf, layer_name="Risk Zones", color_by="risk_score")
 ```
 
-**GeoDataFrame accessor (opt-in):**
+**GeoDataFrame accessor:**
 ```python
-import qbridge  # registers the .qgis accessor on GeoDataFrame
+import qgis_bridge  # registers the .qgis accessor on GeoDataFrame
 
 gdf.qgis.send(layer_name="Risk Zones", color_by="risk_score")
 ```
@@ -59,7 +59,7 @@ brew install uv          # macOS
 pip install uv           # any platform
 
 # Clone and set up
-git clone https://github.com/razarizvi/qgis-bridge
+git clone https://github.com/R-Repo/qgis-bridge
 cd qgis-bridge
 uv sync --group dev      # creates .venv and installs all dependencies
 

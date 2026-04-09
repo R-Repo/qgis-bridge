@@ -41,8 +41,8 @@ Python env                          QGIS Desktop
 ──────────────────────────────      ──────────────────────────────
 to_qgis(gdf, layer_name=...)
   │
-  ├─ write gdf → /tmp/qbridge/      (GeoJSON via gdf.to_file())
-  │   <uuid>/layer.geojson
+  ├─ write gdf → /tmp/qbridge/      (GeoPackage via gdf.to_file())
+  │   <uuid>/layer.gpkg
   │
   ├─ generate QML style →           (XML, built from color_by / color_ramp args)
   │   /tmp/qbridge/<uuid>/style.qml
@@ -50,7 +50,7 @@ to_qgis(gdf, layer_name=...)
   └─ send JSON over TCP ──────────► plugin receives JSON:
                                      {
                                        "layer_name": "Risk Zones",
-                                       "file_path": "/tmp/qbridge/.../layer.geojson",
+                                       "file_path": "/tmp/qbridge/.../layer.gpkg",
                                        "qml_path":  "/tmp/qbridge/.../style.qml",
                                        "layer_type": "vector",
                                        "update_existing": true
@@ -140,7 +140,7 @@ Dispatch logic:
 - Otherwise → vector → `_handle_vector()`
 
 `_handle_vector(gdf, layer_name, color_by, color_ramp, opacity, symbol_type, update_existing)`:
-1. Write GeoDataFrame to temp GeoJSON via `gdf.to_file(path, driver="GeoJSON")`
+1. Write GeoDataFrame to temp GeoPackage via `gdf.to_file(path, driver="GPKG")`
 2. Generate QML via `_style.make_vector_qml(gdf, color_by, color_ramp, opacity, symbol_type)`
 3. Write QML to temp file
 4. Send notification via `_client.send(message)`
@@ -233,7 +233,7 @@ On receiving a complete JSON message:
 {
   "type": "vector",
   "layer_name": "Risk Zones",
-  "file_path": "/tmp/qbridge/a1b2c3/layer.geojson",
+  "file_path": "/tmp/qbridge/a1b2c3/layer.gpkg",
   "qml_path": "/tmp/qbridge/a1b2c3/style.qml",
   "update_existing": true
 }
@@ -266,9 +266,8 @@ On receiving a complete JSON message:
 | `color_by` | str \| None | None | Column name to drive color |
 | `color_ramp` | str | `"RdYlGn"` | Any QGIS-named ramp or matplotlib name |
 | `opacity` | float | 1.0 | 0.0–1.0 |
-| `symbol_type` | str | auto-detected | `"point"`, `"line"`, `"polygon"` |
+| `symbol_type` | str | auto-detected | `"marker"`, `"line"`, `"fill"` |
 | `n_classes` | int | 5 | For graduated renderer |
-| `classification` | str | `"quantile"` | `"quantile"`, `"equal"`, `"jenks"` |
 
 ### Raster
 | Parameter | Type | Default | Notes |
@@ -313,14 +312,20 @@ On receiving a complete JSON message:
 
 ---
 
-## 12. Implementation Order
+## 12. Implementation Status
 
-1. `_uri.py` + `tests/test_uri.py` — pure logic, no deps, easy to validate
-2. `_style.py` + `tests/test_style.py` — QML generation, no deps
-3. `_temp.py` — temp file management
-4. `_client.py` — socket client (can test against a stub server)
-5. `_core.py` — glue: calls the above modules
-6. `__init__.py` + `_accessor.py` — public API assembly
-7. `qgis_plugin/server.py` — Qt TCP server (requires QGIS environment to run)
-8. `qgis_plugin/plugin.py` + `metadata.txt` — QGIS plugin wrapper
-9. End-to-end integration test (manual, with QGIS open)
+All modules are implemented. Remaining work is publishing and hardening.
+
+| Module | Status |
+|---|---|
+| `_uri.py` + `tests/test_uri.py` | Complete |
+| `_style.py` + `tests/test_style.py` | Complete |
+| `_temp.py` | Complete |
+| `_client.py` | Complete |
+| `_core.py` | Complete |
+| `__init__.py` + `_accessor.py` | Complete |
+| `qgis_plugin/server.py` | Complete |
+| `qgis_plugin/plugin.py` + `metadata.txt` | Complete |
+| CI (GitHub Actions) | Complete |
+| PyPI publish workflow | Complete (needs trusted publisher setup) |
+| QGIS Plugin Repository | Not yet submitted |

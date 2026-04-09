@@ -31,12 +31,19 @@ qgis-bridge/
 ├── qgis_plugin/            QGIS plugin — installed inside QGIS
 │   ├── __init__.py         classFactory entry point (required by QGIS)
 │   ├── metadata.txt        QGIS plugin metadata (required by QGIS)
-│   ├── plugin.py           Plugin class: starts/stops the TCP server
+│   ├── plugin.py           Plugin class: starts/stops the TCP server, status menu
 │   └── server.py           QTcpServer: receives messages, loads layers via PyQGIS
 │
 ├── tests/                  Tests runnable without QGIS
-│   ├── test_uri.py         URI translation tests (complete)
-│   └── test_style.py       QML generation tests (placeholder)
+│   ├── test_uri.py         URI translation tests
+│   └── test_style.py       QML generation tests (all renderer types + symbol types)
+│
+├── notebooks/              Usage examples
+│   └── demo.ipynb          Interactive demo of all features
+│
+├── .github/workflows/      CI/CD
+│   ├── ci.yml              Run tests on push/PR (Python 3.9–3.12)
+│   └── publish.yml         Auto-publish to PyPI on GitHub release
 │
 ├── docs/decisions/         Architectural Decision Records (ADRs)
 ├── AGENT/
@@ -69,7 +76,7 @@ They communicate over a **local TCP socket on port 45678**. The Python package i
 
 - **Never add required dependencies to `pyproject.toml`.** The Python package is stdlib-only by design (ADR-006). If a dependency seems necessary, write an ADR first.
 - **Never change the JSON protocol without updating both sides.** The message format in `_client.py` and `server.py` must stay in sync (ADR-009).
-- **Never monkey-patch GeoDataFrame.** The accessor uses `@register_geodataframe_accessor` (ADR-005).
+- **Never monkey-patch GeoDataFrame.** The accessor uses `@pd.api.extensions.register_dataframe_accessor` (ADR-005).
 - **Never import cloud SDKs** (boto3, google-cloud-storage, etc.) in the Python package (ADR-006, ADR-007).
 - **Never expose the socket beyond localhost.** The server binds to 127.0.0.1 only.
 - **Read `AGENT/plan.md` before implementing anything.** It specifies module responsibilities and implementation order.
@@ -83,7 +90,7 @@ They communicate over a **local TCP socket on port 45678**. The Python package i
 {
   "type": "vector",
   "layer_name": "Risk Zones",
-  "file_path": "/tmp/qbridge/a1b2c3/layer.geojson",
+  "file_path": "/tmp/qbridge/a1b2c3/layer.gpkg",
   "qml_path": "/tmp/qbridge/a1b2c3/style.qml",
   "update_existing": true
 }

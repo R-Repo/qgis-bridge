@@ -12,7 +12,7 @@ from . import _client, _style, _temp
 from ._uri import is_cloud_uri, to_gdal_path
 
 _GEOM_TYPE_MAP = {
-    "Point": "point", "MultiPoint": "point",
+    "Point": "marker", "MultiPoint": "marker",
     "LineString": "line", "MultiLineString": "line",
     "Polygon": "fill", "MultiPolygon": "fill",
 }
@@ -88,16 +88,16 @@ def _handle_vector(
 
     # Write temp files
     call_dir = _temp.create_call_dir()
-    geojson_path = call_dir / "layer.geojson"
+    gpkg_path = call_dir / "layer.gpkg"
     qml_path = call_dir / "style.qml"
 
-    gdf.to_file(geojson_path, driver="GeoJSON")
+    gdf.to_file(gpkg_path, driver="GPKG")
     qml_path.write_text(qml, encoding="utf-8")
 
     return _client.send({
         "type": "vector",
         "layer_name": layer_name,
-        "file_path": str(geojson_path),
+        "file_path": str(gpkg_path),
         "qml_path": str(qml_path),
         "update_existing": update_existing,
     }, port=port)

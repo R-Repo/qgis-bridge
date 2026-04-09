@@ -157,6 +157,14 @@ All significant design choices are documented in `docs/decisions/`. **Read the r
 
 ---
 
+## Coding Standards
+
+- **Small, sensible commits.** Each commit should be one logical change.
+- **Best practices always.** Follow Python conventions, type hints where useful, clear naming.
+- **Minimal code.** As simple and as few lines as possible without compromising readability. No speculative abstractions, no dead code, no unnecessary comments.
+
+---
+
 ## Agent Workflow
 
 ### Before making changes

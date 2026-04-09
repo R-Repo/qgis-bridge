@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "qgis-bridge"
+version = "0.1.0"
+description = "Push spatial data from Python directly into a live QGIS session"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "geopandas",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/qgis_bridge"]

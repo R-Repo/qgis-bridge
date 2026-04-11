@@ -2,7 +2,7 @@
 name=qgis-bridge
 qgisMinimumVersion=3.28
 description=Receives spatial layers from a Python environment and adds them to the current QGIS project.
-version=0.1.0
+version=0.1.1
 about=Bridge between Python analysis environments and QGIS Desktop. Push GeoDataFrames and raster layers into QGIS with a single function call.
 author=Raza Rizvi
 email=R-Repo@users.noreply.github.com

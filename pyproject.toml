@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Push spatial data from Python directly into a live QGIS session"
 readme = "README.md"
 license = { file = "LICENSE" }
+authors = [{ name = "Raza Rizvi" }]
 requires-python = ">=3.9"
 dependencies = []
 classifiers = [

@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build plugin zip
         run: |
+          cp LICENSE qgis_plugin/
           cd qgis_plugin
           zip -r ../qgis_bridge.zip . -x '__pycache__/*' '*.pyc'
           cd ..

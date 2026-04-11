@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qgis-bridge"
-version = "0.1.1"
+version = "0.1.2"
 description = "Push spatial data from Python directly into a live QGIS session"
 readme = "README.md"
 license = { file = "LICENSE" }
